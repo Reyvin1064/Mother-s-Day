@@ -11,7 +11,7 @@
     };
 
     if (isiOS() && musicStatus) {
-      musicStatus.textContent = 'Tap Play — iOS requires a user gesture to start audio';
+      musicStatus.textContent = 'Tap Play';
     }
 
     musicToggle.addEventListener('click', () => {
