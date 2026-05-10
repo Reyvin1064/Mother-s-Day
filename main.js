@@ -1,4 +1,30 @@
 (() => {
+  // Music Control
+  const bgMusic = document.getElementById('bgMusic');
+  const musicToggle = document.getElementById('musicToggle');
+  const musicStatus = document.getElementById('musicStatus');
+
+  if (musicToggle && bgMusic) {
+    musicToggle.addEventListener('click', () => {
+      if (bgMusic.paused) {
+        bgMusic.play();
+        musicToggle.textContent = '⏸ Pause Music';
+        musicStatus.textContent = '🎵 Now playing...';
+      } else {
+        bgMusic.pause();
+        musicToggle.textContent = '▶ Play Music';
+        musicStatus.textContent = '';
+      }
+    });
+
+    bgMusic.addEventListener('ended', () => {
+      // Music will loop, but just in case
+      bgMusic.currentTime = 0;
+      bgMusic.play();
+    });
+  }
+
+  // Photo Rotation Logic
   const memoryPhotos = Array.from(document.querySelectorAll(".bg-memories .memory-photo"));
   const photosPerBatch = 4;
   const slideEveryMs = 5500;
@@ -11,6 +37,28 @@
   if (memoryPhotos.length === 0) {
     return;
   }
+
+  function applyOrientationClass(photo) {
+    const image = photo.querySelector("img");
+
+    if (!image) {
+      return;
+    }
+
+    const updateOrientation = () => {
+      photo.classList.toggle("is-landscape", image.naturalWidth > image.naturalHeight);
+      photo.classList.toggle("is-portrait", image.naturalHeight >= image.naturalWidth);
+    };
+
+    if (image.complete) {
+      updateOrientation();
+      return;
+    }
+
+    image.addEventListener("load", updateOrientation, { once: true });
+  }
+
+  memoryPhotos.forEach(applyOrientationClass);
 
   function getBatch(startIndex) {
     return Array.from({ length: Math.min(photosPerBatch, memoryPhotos.length) }, (_, index) => {
