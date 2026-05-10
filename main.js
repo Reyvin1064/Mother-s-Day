@@ -5,6 +5,15 @@
   const musicStatus = document.getElementById('musicStatus');
 
   if (musicToggle && bgMusic) {
+    // Show iOS hint because iOS requires a user gesture to start audio
+    const isiOS = () => {
+      return /iP(hone|od|ad)/.test(navigator.platform) || (navigator.userAgent.includes('Mac') && 'ontouchend' in document);
+    };
+
+    if (isiOS() && musicStatus) {
+      musicStatus.textContent = 'Tap Play — iOS requires a user gesture to start audio';
+    }
+
     musicToggle.addEventListener('click', () => {
       if (bgMusic.paused) {
         bgMusic.play();

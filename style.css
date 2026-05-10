@@ -526,3 +526,51 @@ button:active {
     top: 81%;
   }
 }
+
+/* Mobile / small-screen adjustments */
+@media (max-width: 420px) {
+  /* Reduce sizes and disable heavy floating for better performance */
+  .pig {
+    font-size: clamp(28px, 12vw, 48px);
+  }
+
+  /* Keep photos visible but reduce movement to avoid jank */
+  .memory-photo.is-visible {
+    animation: none;
+    transform: translate3d(0, 0, 0) scale(1) rotate(var(--tilt, 0deg));
+  }
+
+  /* Ensure landscape frames hug the very edges on small phones */
+  .memory-photo.is-landscape.slot-1,
+  .memory-photo.is-landscape.slot-2 {
+    left: 0 !important;
+  }
+
+  .memory-photo.is-landscape.slot-3,
+  .memory-photo.is-landscape.slot-4 {
+    right: 0 !important;
+  }
+
+  /* Keep floating pigs visible on small devices but smaller and less obtrusive */
+  .floating-pigs {
+    display: block;
+    z-index: 0;
+  }
+
+  .pig {
+    font-size: clamp(22px, 10vw, 42px);
+    opacity: 0.85;
+    filter: drop-shadow(0 6px 8px rgba(0,0,0,0.06));
+  }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .memory-photo.is-visible,
+  .bg-hearts::before,
+  .bg-hearts::after,
+  .pig {
+    animation: none !important;
+    transition: none !important;
+  }
+}
